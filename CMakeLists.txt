@@ -13,6 +13,7 @@ set(EXECUTABLE_NAME mission_control_app)
 # Creamos el ejecutable a partir de los archivos fuente en la carpeta src/.
 add_executable(${EXECUTABLE_NAME}
     src/main.cpp
+    src/SurveillanceMission.cpp
     # A medida que creemos más clases, añadiremos sus .cpp aquí
 )
 
