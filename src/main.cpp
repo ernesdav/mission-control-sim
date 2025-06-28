@@ -1,30 +1,20 @@
-#include <iostream>
-#include <memory>
-#include <vector>
-
-#include "MissionQueue.h"
+#include "MissionControl.h"
 #include "SurveillanceMission.h"
 #include "DeliveryMission.h"
-#include "Drone.h"
+#include <memory>
 
 int main() {
-    std::cout << "--- Mission Control Simulator Initializing Fleet ---" << std::endl;
+    MissionControl mc(3); // Creamos un centro de control con 3 drones
 
-    // Creamos nuestra flota de drones.
-    // Al crearse, cada dron lanzará su propio hilo.
-    std::vector<std::unique_ptr<Drone>> fleet;
-    for (int i = 1; i <= 3; ++i) {
-        fleet.push_back(std::make_unique<Drone>(i));
-    }
+    // Añadimos misiones al sistema
+    mc.addMission(std::make_unique<SurveillanceMission>(101, 2, 34.0, -118.2));
+    mc.addMission(std::make_unique<DeliveryMission>(201, 1, 40.7, -74.0, "Medical Supplies"));
+    mc.addMission(std::make_unique<SurveillanceMission>(102, 3, 37.7, -122.4));
+    mc.addMission(std::make_unique<DeliveryMission>(202, 1, 41.8, -87.6, "Urgent Documents"));
+    mc.addMission(std::make_unique<SurveillanceMission>(103, 2, 29.7, -95.3));
 
-    std::cout << "\nFleet of " << fleet.size() << " drones deployed. Main thread is standing by." << std::endl;
-    std::cout << "The program will terminate when all drones complete their lifecycle (approx. 10s)." << std::endl;
-
-    // El programa principal esperará aquí.
-    // Cuando 'main' termine, los unique_ptr en el vector 'fleet' se destruirán.
-    // Al destruirse, se llamará al destructor de cada Drone.
-    // El destructor de cada Drone llamará a 'droneThread.join()',
-    // asegurando que el programa espere a que todos los hilos terminen.
+    // La simulación se ejecuta hasta que el usuario presione Enter
+    mc.runSimulation();
 
     return 0;
 }
