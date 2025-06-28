@@ -15,6 +15,7 @@ add_executable(${EXECUTABLE_NAME}
     src/main.cpp
     src/SurveillanceMission.cpp
     src/DeliveryMission.cpp
+    src/Drone.cpp
     # A medida que creemos más clases, añadiremos sus .cpp aquí
 )
 

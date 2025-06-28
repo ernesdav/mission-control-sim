@@ -5,31 +5,26 @@
 #include "MissionQueue.h"
 #include "SurveillanceMission.h"
 #include "DeliveryMission.h"
+#include "Drone.h"
 
 int main() {
-    std::cout << "--- Mission Control Simulator Initialized ---" << std::endl;
+    std::cout << "--- Mission Control Simulator Initializing Fleet ---" << std::endl;
 
-    MissionQueue missionQueue;
-
-    std::cout << "Adding missions to the queue..." << std::endl;
-    missionQueue.addMission(std::make_unique<SurveillanceMission>(101, 2, 34.0, -118.2));  // Prio 2
-    missionQueue.addMission(std::make_unique<DeliveryMission>(201, 1, 40.7, -74.0, "Medical Supplies")); // Prio 1
-    missionQueue.addMission(std::make_unique<SurveillanceMission>(102, 3, 37.7, -122.4));
-    missionQueue.addMission(std::make_unique<DeliveryMission>(202, 1, 41.8, -87.6, "Urgent Documents"));
-
-    std::cout << "\n--- Executing missions based on priority ---" << std::endl;
-
-    // Procesar las misiones. La cola las devuelve en orden de prioridad
-    while (!missionQueue.isEmpty()) {
-        std::unique_ptr<Mission> nextMission = missionQueue.getNextMission();
-        
-        std::cout << "\nNext mission (ID: " << nextMission->getId() << ", Prioriy: " << nextMission->getPriority() << ") retrieved from queue." << std::endl;
-
-        // Aqui sucede el Polimorfismo. No se necesita saber el tipo de mision, solo necesitamos llamar execute()
-        nextMission->execute();
+    // Creamos nuestra flota de drones.
+    // Al crearse, cada dron lanzará su propio hilo.
+    std::vector<std::unique_ptr<Drone>> fleet;
+    for (int i = 1; i <= 3; ++i) {
+        fleet.push_back(std::make_unique<Drone>(i));
     }
 
-    std::cout << "\nAll missions completed. Mission Control signing off." << std::endl;
-    
+    std::cout << "\nFleet of " << fleet.size() << " drones deployed. Main thread is standing by." << std::endl;
+    std::cout << "The program will terminate when all drones complete their lifecycle (approx. 10s)." << std::endl;
+
+    // El programa principal esperará aquí.
+    // Cuando 'main' termine, los unique_ptr en el vector 'fleet' se destruirán.
+    // Al destruirse, se llamará al destructor de cada Drone.
+    // El destructor de cada Drone llamará a 'droneThread.join()',
+    // asegurando que el programa espere a que todos los hilos terminen.
+
     return 0;
 }
