@@ -14,6 +14,7 @@ set(EXECUTABLE_NAME mission_control_app)
 add_executable(${EXECUTABLE_NAME}
     src/main.cpp
     src/SurveillanceMission.cpp
+    src/DeliveryMission.cpp
     # A medida que creemos más clases, añadiremos sus .cpp aquí
 )
 
