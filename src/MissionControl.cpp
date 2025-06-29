@@ -12,7 +12,7 @@ MissionControl::~MissionControl() {
     stop_signal = true;  // Se manda la señal de parada a todos los drones
 }
 
-void MissionControl::addMission(std::unique_ptr<Mission> mission) {
+void MissionControl::addMission(std::shared_ptr<Mission> mission) {
     mission_queue.addMission(std::move(mission));
 }
 

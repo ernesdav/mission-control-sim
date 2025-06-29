@@ -16,7 +16,7 @@ public:
     MissionControl(int fleet_size);
     ~MissionControl();
 
-    void addMission(std::unique_ptr<Mission> mission);
+    void addMission(std::shared_ptr<Mission> mission);
     void runSimulation();
 };
 

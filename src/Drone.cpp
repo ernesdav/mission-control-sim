@@ -1,6 +1,7 @@
 #include "Drone.h"
 #include "MissionQueue.h"
 #include <iostream>
+#include <chrono>
 
 
 // El constructor inicializa los miembros y lanza el hilo
@@ -20,14 +21,14 @@ Drone::~Drone() {
 
 // El "ciclo de vida" del dron
 void Drone::run() {
-    std::cout << "Drone " << id << " operational." << std::endl;
+    // std::cout << "Drone " << id << " operational." << std::endl;
 
     while (!stop_signal) {
-        std::unique_ptr<Mission> mission_to_execute = mission_queue.getNextMission();
+        std::shared_ptr<Mission> mission_to_execute = mission_queue.getNextMission();
 
         if (mission_to_execute) {
             state = DroneState::WORKING;
-            std::cout << "Drone " << id << " picked up mission " << mission_to_execute->getId() << "." << std::endl;
+            // std::cout << "Drone " << id << " picked up mission " << mission_to_execute->getId() << "." << std::endl;
             mission_to_execute->execute();
             state = DroneState::IDLE;
         } else {
