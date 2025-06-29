@@ -1,0 +1,5 @@
+# Ignorar el historial de Git
+.git
+
+# Ignorar el directorio de compilación local
+build/
